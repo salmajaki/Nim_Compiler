@@ -4,11 +4,13 @@ import milestone_1;
 
 start : (stmt (SEMI_COLON)*)* EOF;
 
-if_stmt: IF condition COLON 
-                (INDENT* stmt)*
-        INDENT* (ELIF condition COLON 
-                (INDENT* stmt)*)*
-        INDENT* (ELSE COLON (INDENT* stmt)*)?;
+if_stmt: IF condition COLON
+                stmt_or_block
+        (INDENT)* (ELIF condition COLON 
+                stmt_or_block)*
+        (INDENT)* (ELSE COLON stmt_or_block)?;
+
+stmt_or_block: stmt | (INDENT stmt)+;
 
 stmt: if_stmt | assignmnet | decl_stmt;
 
