@@ -157,8 +157,10 @@ def get_token_type(token):
         return "LETTER"
     elif token.type == nim_grammarLexer.VARIABLE:
         return "VARIABLE"
-    elif token.type == nim_grammarLexer.EQUALS_OPERATOR:
-        return "EQUALS_OPERATOR"
+    elif token.type == nim_grammarLexer.EQUALS_ASSIGN:
+        return "EQUALS_ASSIGN"
+    elif token.type == nim_grammarLexer.EQUALS_COMPARE:
+        return "EQUALS_COMPARE"
     elif token.type == nim_grammarLexer.ADD_OPERATOR:
         return "ADD_OPERATOR"
     elif token.type == nim_grammarLexer.MUL_OPERATOR:
@@ -267,13 +269,13 @@ def main():
     token_stream = CommonTokenStream(lexer)
     parser = nim_grammarParser(token_stream)
 
-    #   tree = parser.start()
-    #   print(Trees.toStringTree(tree,None, parser))
+    tree = parser.start()
+    print(Trees.toStringTree(tree,None, parser))
 
     token = lexer.nextToken()
 
     while not token.type == Token.EOF:
-        output_file.write(get_token_type(token) if get_token_type(token).__eq__("INDENT\n") else get_token_type(token)+"  "+ token.text+"\n")
+        output_file.write(get_token_type(token)+"  "+ token.text+"\n")
         token = lexer.nextToken()
 
 
