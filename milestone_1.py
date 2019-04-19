@@ -255,6 +255,8 @@ def get_token_type(token):
         return "FLOAT64_LIT"
     elif token.type == nim_grammarLexer.INDENT:
         return "INDENT"
+    elif token.type == nim_grammarLexer.ECHO:
+        return "ECHO"
     else:
         return "ERROR UNKNOWN TOKEN"
 
@@ -267,8 +269,8 @@ def main():
     token_stream = CommonTokenStream(lexer)
     parser = nim_grammarParser(token_stream)
 
-    #   tree = parser.start()
-    #   print(Trees.toStringTree(tree,None, parser))
+    tree = parser.start()
+    print(Trees.toStringTree(tree,None, parser))
 
     token = lexer.nextToken()
 
