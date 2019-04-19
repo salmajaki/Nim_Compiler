@@ -4,6 +4,20 @@ import milestone_1;
 
 start : (stmt (SEMI_COLON)*)* EOF;
 
+
+echo : ECHO (((strings| IDENTIFIER | function_call | attribute) (COMMA (strings| IDENTIFIER | function_call | attribute))*) | (OPEN_PAREN (strings| IDENTIFIER | function_call | attribute) (COMMA (strings| IDENTIFIER | function_call |attribute))* CLOSE_PAREN));
+strings : STR_LIT | CHAR_LIT | RSTR_LIT | TRIPLESTR_LIT ;
+
+return_stmt: RETURN exp?;
+
+import_stmt : (FROM IDENTIFIER)? IMPORT IDENTIFIER (COMMA IDENTIFIER)* ;
+
+break_stmt : BREAK IDENTIFIER?;
+
+num_lit : INT_LIT | INT8_LIT | INT16_LIT | INT32_LIT | INT64_LIT| UINT_LIT | UINT8_LIT | UINT16_LIT | UINT32_LIT
+          | UINT64_LIT | EXP | FLOAT_LIT  | FLOAT32_LIT | FLOAT64_LIT ;
+assert_stmt : ASSERT num_lit EQUALS_COMPARE num_lit;
+
 if_stmt: IF condition COLON
                 stmt_or_block
         (INDENT)* (ELIF condition COLON 
@@ -12,7 +26,9 @@ if_stmt: IF condition COLON
 
 stmt_or_block: stmt | (INDENT stmt)+;
 
-stmt: if_stmt | assignmnet | decl_stmt;
+while_stmt : WHILE condition COLON (INDENT stmt)* ;
+
+stmt: if_stmt | assignmnet | decl_stmt | echo | return_stmt | import_stmt | break_stmt | assert_stmt | while_stmt | CONTINUE;
 
 literal : INT_LIT | INT8_LIT | INT16_LIT | INT32_LIT | INT64_LIT  | UINT_LIT | UINT8_LIT | UINT16_LIT | UINT32_LIT | UINT64_LIT | FLOAT_LIT | FLOAT32_LIT | FLOAT64_LIT | GENERALIZED_TRIPLESTR_LIT | STR_LIT | CHAR_LIT |TRIPLESTR_LIT | GENERALIZED_STR_LIT | DIGIT | TRUE | FALSE;
 
@@ -22,7 +38,9 @@ binop:  EQUALS_COMPARE |
         MINUS_OPERATOR |
         DIV_OPERATOR |
         LESS_THAN |
+        (LESS_THAN EQUALS_ASSIGN)  |
         GREATER_THAN |
+        (GREATER_THAN EQUALS_ASSIGN) |
         OR_OPERATOR |
         AND_OPERATOR |
         BITWISE_NOT_OPERATOR |
@@ -51,3 +69,4 @@ const_or_let_stmt: (LET | CONST) IDENTIFIER EQUALS_ASSIGN exp |
         (LET | CONST) assignment_block;
 
 assignment_block: ((INDENT+) IDENTIFIER EQUALS_ASSIGN exp)+;
+
