@@ -24,7 +24,9 @@ if_stmt: IF condition COLON
                 (INDENT* stmt)*)*
         INDENT* (ELSE COLON (INDENT* stmt)*)?;
 
-stmt: if_stmt | assignmnet | decl_stmt | echo | return_stmt | import_stmt | break_stmt | assert_stmt;
+while_stmt : WHILE condition COLON (INDENT stmt)* ;
+
+stmt: if_stmt | assignmnet | decl_stmt | echo | return_stmt | import_stmt | break_stmt | assert_stmt | while_stmt | CONTINUE;
 
 literal : INT_LIT | INT8_LIT | INT16_LIT | INT32_LIT | INT64_LIT  | UINT_LIT | UINT8_LIT | UINT16_LIT | UINT32_LIT | UINT64_LIT | FLOAT_LIT | FLOAT32_LIT | FLOAT64_LIT | GENERALIZED_TRIPLESTR_LIT | STR_LIT | CHAR_LIT |TRIPLESTR_LIT | GENERALIZED_STR_LIT | DIGIT | TRUE | FALSE;
 
@@ -34,7 +36,9 @@ binop:  EQUALS_COMPARE |
         MINUS_OPERATOR |
         DIV_OPERATOR |
         LESS_THAN |
+        (LESS_THAN EQUALS_ASSIGN)  |
         GREATER_THAN |
+        (GREATER_THAN EQUALS_ASSIGN) |
         OR_OPERATOR |
         AND_OPERATOR |
         BITWISE_NOT_OPERATOR |
