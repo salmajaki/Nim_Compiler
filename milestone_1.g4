@@ -72,6 +72,9 @@ XOR : 'xor';
 YIELD : 'yield';
 VARIABLE : 'var';
 
+ECHO : 'echo';
+ASSERT : 'assert';
+
 IDENTIFIER : LETTER+ (('_')?(LETTER | DIGIT))*  ;
 LETTER : [a-zA-Z];
 EQUALS_COMPARE : '==';

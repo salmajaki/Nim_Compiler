@@ -259,6 +259,8 @@ def get_token_type(token):
         return "INDENT"
     elif token.type == nim_grammarLexer.ECHO:
         return "ECHO"
+    elif token.type == nim_grammarLexer.ASSERT:
+        return "ASSERT"
     else:
         return "ERROR UNKNOWN TOKEN"
 
@@ -272,7 +274,7 @@ def main():
     parser = nim_grammarParser(token_stream)
 
     tree = parser.start()
-    print(Trees.toStringTree(tree,None, parser))
+    #print(Trees.toStringTree(tree,None, parser))
 
     token = lexer.nextToken()
 
