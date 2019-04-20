@@ -4,8 +4,9 @@ import milestone_1;
 
 start : (stmt (SEMI_COLON)*)* EOF;
 
-echo : ECHO (((strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier | if_exp) (COMMA (strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier | if_exp))*) |
-         (OPEN_PAREN (strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier | if_exp) (COMMA (strings| IDENTIFIER | function_call |attribute | array_access | ref_identifier | if_exp))* CLOSE_PAREN));
+echo : ECHO ((echo_param (COMMA echo_param)*) | (OPEN_PAREN echo_param (COMMA echo_param)* CLOSE_PAREN)) ;
+echo_param : OPEN_PAREN echo_elem CLOSE_PAREN | echo_elem ;
+echo_elem : strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier | if_exp ;
 strings : STR_LIT | CHAR_LIT | RSTR_LIT | TRIPLESTR_LIT ;
 
 return_stmt: RETURN exp?;
@@ -20,7 +21,7 @@ assert_stmt : ASSERT num_lit EQUALS_COMPARE num_lit;
 
 if_stmt: IF condition COLON
                 stmt_or_block
-        (INDENT)* (ELIF condition COLON 
+        (INDENT)* (ELIF condition COLON
                 stmt_or_block)*
         (INDENT)* (ELSE COLON stmt_or_block)?;
 
@@ -28,7 +29,7 @@ if_exp: IF condition COLON exp ELSE COLON exp;
 
 when_stmt: WHEN condition COLON
                 stmt_or_block
-        (INDENT)* (ELIF condition COLON 
+        (INDENT)* (ELIF condition COLON
                 stmt_or_block)*
         (INDENT)* (ELSE COLON stmt_or_block)?;
 
@@ -38,10 +39,10 @@ stmt_or_block: stmt | (INDENT+ stmt)+;
 
 while_stmt : WHILE condition COLON (INDENT+ stmt)* ;
 
-stmt: if_stmt | assignment | decl_stmt | echo | return_stmt 
-        | import_stmt | break_stmt | assert_stmt | while_stmt | 
+stmt: if_stmt | assignment | decl_stmt | echo | return_stmt
+        | import_stmt | break_stmt | assert_stmt | while_stmt |
         CONTINUE | for_stmt | function_call | INDENT | case_stmt |
-        DISCARD | type_stmt | template_stmt | macro_stmt | proc_stmt | 
+        DISCARD | type_stmt | template_stmt | macro_stmt | proc_stmt |
         when_stmt | block_stmt;
 
 literal : numeral | FLOAT_LIT | FLOAT32_LIT | FLOAT64_LIT | GENERALIZED_TRIPLESTR_LIT | STR_LIT | CHAR_LIT |TRIPLESTR_LIT | GENERALIZED_STR_LIT | TRUE | FALSE | array_literal | seq_literal | array_access;
@@ -73,7 +74,7 @@ binop:  EQUALS_COMPARE |
         XOR_OPERATOR |
         DIV |
         MOD |
-        AND | 
+        AND |
         OR;
 
 exp: exp binop exp | NOT exp | IDENTIFIER | literal | function_call | attribute | OPEN_PAREN exp CLOSE_PAREN | numeral | ref_identifier | if_exp;
@@ -85,7 +86,7 @@ function_Identifier: attribute DOT IDENTIFIER (type_param)? | IDENTIFIER (type_p
 function_params: (OPEN_PAREN params? CLOSE_PAREN) | params;
 
 // attribute DOT IDENTIFIER (type_param)? (OPEN_PAREN params CLOSE_PAREN)? | IDENTIFIER (type_param)? OPEN_PAREN params CLOSE_PAREN
-//         | OPEN_PAREN exp CLOSE_PAREN DOT IDENTIFIER | IDENTIFIER | 
+//         | OPEN_PAREN exp CLOSE_PAREN DOT IDENTIFIER | IDENTIFIER |
 //         IDENTIFIER params | attribute DOT IDENTIFIER params;    // no brackets
 attribute: IDENTIFIER (DOT IDENTIFIER)* | OPEN_PAREN attribute CLOSE_PAREN;
 
@@ -95,8 +96,8 @@ assignment: attribute EQUALS_ASSIGN exp;
 
 decl_stmt: var_stmt | const_or_let_stmt;
 
-var_stmt: VARIABLE IDENTIFIER EQUALS_ASSIGN exp | 
-        VARIABLE decl_type_stmt | 
+var_stmt: VARIABLE IDENTIFIER EQUALS_ASSIGN exp |
+        VARIABLE decl_type_stmt |
         VARIABLE decl_type_block;
 
 decl_type_stmt: IDENTIFIER (COMMA IDENTIFIER)* COLON types (EQUALS_ASSIGN exp)?;
@@ -143,7 +144,7 @@ varargs: 'varargs' OPEN_BRACK types CLOSE_BRACK;
 template_stmt: TEMPLATE IDENTIFIER OPEN_PAREN params CLOSE_PAREN (OPEN_BRACE DOT IDENTIFIER CLOSE_BRACE)? EQUALS_ASSIGN
                 stmt_or_block;
 
-macro_stmt: MACRO IDENTIFIER OPEN_PAREN 
+macro_stmt: MACRO IDENTIFIER OPEN_PAREN
                 (IDENTIFIER COLON types (SEMI_COLON IDENTIFIER COLON types)*)?
                 CLOSE_PAREN COLON types EQUALS_ASSIGN stmt_or_block;
 proc_stmt: PROC (IDENTIFIER | predefined_proc) (type_param)?
