@@ -4,8 +4,8 @@ import milestone_1;
 
 start : (stmt (SEMI_COLON)*)* EOF;
 
-
-echo : ECHO (((strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier) (COMMA (strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier))*) | (OPEN_PAREN (strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier) (COMMA (strings| IDENTIFIER | function_call |attribute | array_access | ref_identifier))* CLOSE_PAREN));
+echo : ECHO (((strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier | if_exp) (COMMA (strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier | if_exp))*) |
+         (OPEN_PAREN (strings| IDENTIFIER | function_call | attribute | array_access | ref_identifier | if_exp) (COMMA (strings| IDENTIFIER | function_call |attribute | array_access | ref_identifier | if_exp))* CLOSE_PAREN));
 strings : STR_LIT | CHAR_LIT | RSTR_LIT | TRIPLESTR_LIT ;
 
 return_stmt: RETURN exp?;
@@ -23,6 +23,8 @@ if_stmt: IF condition COLON
         (INDENT)* (ELIF condition COLON 
                 stmt_or_block)*
         (INDENT)* (ELSE COLON stmt_or_block)?;
+
+if_exp: IF condition COLON exp ELSE COLON exp;
 
 when_stmt: WHEN condition COLON
                 stmt_or_block
@@ -74,7 +76,7 @@ binop:  EQUALS_COMPARE |
         AND | 
         OR;
 
-exp: exp binop exp | NOT exp | IDENTIFIER | literal | function_call | attribute | OPEN_PAREN exp CLOSE_PAREN | numeral | ref_identifier;
+exp: exp binop exp | NOT exp | IDENTIFIER | literal | function_call | attribute | OPEN_PAREN exp CLOSE_PAREN | numeral | ref_identifier | if_exp;
 ref_identifier: '$' attribute;
 
 params: exp ((EQUALS_ASSIGN|COLON) exp)? (COMMA exp ((EQUALS_ASSIGN|COLON) exp)?)*;
