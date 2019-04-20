@@ -24,6 +24,14 @@ if_stmt: IF condition COLON
                 stmt_or_block)*
         (INDENT)* (ELSE COLON stmt_or_block)?;
 
+when_stmt: WHEN condition COLON
+                stmt_or_block
+        (INDENT)* (ELIF condition COLON 
+                stmt_or_block)*
+        (INDENT)* (ELSE COLON stmt_or_block)?;
+
+block_stmt : BLOCK IDENTIFIER COLON (INDENT stmt)* ;
+
 stmt_or_block: stmt | (INDENT+ stmt)+;
 
 while_stmt : WHILE condition COLON (INDENT+ stmt)* ;
@@ -31,7 +39,8 @@ while_stmt : WHILE condition COLON (INDENT+ stmt)* ;
 stmt: if_stmt | assignment | decl_stmt | echo | return_stmt 
         | import_stmt | break_stmt | assert_stmt | while_stmt | 
         CONTINUE | for_stmt | function_call | INDENT | case_stmt |
-        DISCARD | type_stmt | template_stmt | macro_stmt | proc_stmt;
+        DISCARD | type_stmt | template_stmt | macro_stmt | proc_stmt | 
+        when_stmt | block_stmt;
 
 literal : numeral | FLOAT_LIT | FLOAT32_LIT | FLOAT64_LIT | GENERALIZED_TRIPLESTR_LIT | STR_LIT | CHAR_LIT |TRIPLESTR_LIT | GENERALIZED_STR_LIT | TRUE | FALSE | array_literal | seq_literal | array_access;
 
