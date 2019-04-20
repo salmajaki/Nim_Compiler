@@ -78,7 +78,7 @@ exp: exp binop exp | NOT exp | IDENTIFIER | literal | function_call | attribute 
 ref_identifier: '$' attribute;
 
 params: exp ((EQUALS_ASSIGN|COLON) exp)? (COMMA exp ((EQUALS_ASSIGN|COLON) exp)?)*;
-function_call: function_Identifier function_params? | OPEN_PAREN exp CLOSE_PAREN DOT IDENTIFIER;
+function_call: function_Identifier function_params? | OPEN_PAREN exp CLOSE_PAREN DOT IDENTIFIER | literal DOT IDENTIFIER (function_params)?;
 function_Identifier: attribute DOT IDENTIFIER (type_param)? | IDENTIFIER (type_param)? | predefined_proc;
 function_params: (OPEN_PAREN params? CLOSE_PAREN) | params;
 

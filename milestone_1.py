@@ -274,7 +274,7 @@ def main():
     parser = nim_grammarParser(token_stream)
 
     tree = parser.start()
-    # print(Trees.toStringTree(tree,None, parser))
+    print(Trees.toStringTree(tree,None, parser))
 
     token = lexer.nextToken()
 
